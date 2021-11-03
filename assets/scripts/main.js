@@ -13,15 +13,8 @@ const recipes = [
 const recipeData = {} // You can access all of the Recipe Data from the JSON files in this variable
 
 const router = new Router(function () {
-  /** 
-   * TODO - Part 1
-   * fill in the function to display the home page.
-   * This should be straight forward, functions here should be swapping around the "shown" class only,
-   * which was given to you in the CSS. Simply add / remove this class to the corresponding <section> 
-   * elements to display / hide that section. Everything is hidden by default. Make sure that you 
-   * are removing any "shown" classes on <sections> you don't want to display, this home method should
-   * be called more than just at the start. You should only really need two lines for this function.
-   */
+  document.querySelector('.section--recipe-cards').classList.add('shown');
+  document.querySelector('.section--recipe-expand').classList.remove('shown');
 });
 
 window.addEventListener('DOMContentLoaded', init);
@@ -55,10 +48,15 @@ async function init() {
  * of installing it and getting it running
  */
 function initializeServiceWorker() {
-  /**
-   *  TODO - Part 2
-   *  Initialize the service worker set up in sw.js
-   */
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/sw.js').then(function(registration) {
+        console.log('ServiceWorker registration success: ', registration.scope);
+      }, function(err) {
+        console.log('ServiceWorker registration failed: ', err)
+      });
+    });
+  }
 }
 
 /**
@@ -95,20 +93,13 @@ function createRecipeCards() {
   for (let i = 0; i < recipes.length; i++) {
     const recipeCard = document.createElement('recipe-card');
     recipeCard.data = recipeData[recipes[i]];
-    /**
-     * TODO - Part 1
-     * Create the new routes for each card with .addPage(), use bindRecipeCard()
-     * to bind the 'click' event (and resulting actions) to said card.
-     * We've given you an extra variable on each recipeCard so you don't have to create
-     * a neat page name - it's accessible right here with recipeData[recipes[i]]['page-name'],
-     * it's the filename of the .json without the .json part.
-     * 
-     * Also you can set the <recipe-expand> element's data the same way as a <recipe-card>,
-     * using .data - feel free to peek in the RecipeExpand.js file for more info.
-     * 
-     * Again - the functions here should be swapping around the "shown" class only, simply
-     * add this class to the correct <section> to display that section
-     */
+    let pageName = recipeData[recipes[i]]['page-name']
+    router.addPage(pageName, function() {
+      document.querySelector('.section--recipe-cards').classList.remove('shown');
+      document.querySelector('.section--recipe-expand').classList.add('shown');
+      document.querySelector('recipe-expand').data = recipeData[recipes[i]];
+    });
+    bindRecipeCard(recipeCard, pageName);
     if (i >= 3) recipeCard.classList.add('hidden');
     document.querySelector('.recipe-cards--wrapper').appendChild(recipeCard);
   }
@@ -150,10 +141,9 @@ function bindShowMore() {
  * @param {String} pageName the name of the page to navigate to on click
  */
 function bindRecipeCard(recipeCard, pageName) {
-  /**
-   * TODO - Part 1
-   * Fill in this function as specified in the comment above
-   */
+  recipeCard.addEventListener('click', function() {
+    router.navigate(pageName);
+  });
 }
 
 /**
@@ -161,10 +151,11 @@ function bindRecipeCard(recipeCard, pageName) {
  * it is clicked, the home page is returned to
  */
 function bindEscKey() {
-  /**
-   * TODO - Part 1
-   * Fill in this function as specified in the comment above
-   */
+  window.addEventListener('keydown', function(event) {
+    if (event.code == 'Escape') {
+      router.navigate('home');
+    }
+  })
 }
 
 /**
@@ -175,8 +166,11 @@ function bindEscKey() {
  * info in your popstate function)
  */
 function bindPopstate() {
-  /**
-   * TODO - Part 1
-   * Fill in this function as specified in the comment above
-   */
+  window.onpopstate = function(event) {
+    if (event.state) {
+      router.navigate(event.state['state'], true);
+    } else {
+      router.navigate('home', true);
+    }
+  }
 }
