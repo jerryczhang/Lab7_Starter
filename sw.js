@@ -3,6 +3,7 @@
 
 const CACHE_NAME = 'lab-7-starter';
 const urlsToCache = [
+  '/Lab7_starter/',
   '/Lab7_starter/index.html',
   '/Lab7_starter/favicon.ico',
   '/Lab7_starter/assets',
