@@ -42,8 +42,9 @@ export class Router {
    *                              'popstate' event instead of a normal card click
    */
   navigate(page, statePopped) {
+    let hash = (page == 'home') ? '/' : `#${page}`;
     if (!statePopped) {
-      history.pushState({'state': page}, '', `#${page}`)
+      history.pushState({'state': page}, '', hash)
     }
     this.pages[page]();
   }
