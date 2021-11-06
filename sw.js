@@ -22,7 +22,13 @@ const urlsToCache = [
   'assets/scripts/Router.js',
   'assets/components',
   'assets/components/RecipeCard.js',
-  'assets/components/RecipeExpand.js'
+  'assets/components/RecipeExpand.js',
+  'https://introweb.tech/assets/json/ghostCookies.json',
+  'https://introweb.tech/assets/json/birthdayCake.json',
+  'https://introweb.tech/assets/json/chocolateChip.json',
+  'https://introweb.tech/assets/json/stuffing.json',
+  'https://introweb.tech/assets/json/turkey.json',
+  'https://introweb.tech/assets/json/pumpkinPie.json'
 ];
 
 // Once the service worker has been installed, feed it some initial URLs to cache

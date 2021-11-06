@@ -167,6 +167,10 @@ function bindEscKey() {
  */
 function bindPopstate() {
   window.onpopstate = function(event) {
-    router.navigate(event.state['state'], true);
+    if (event.state) {
+      router.navigate(event.state['state'], true);
+    } else {
+      router.navigate('home', true);
+    }
   }
 }
