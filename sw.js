@@ -1,5 +1,6 @@
 // sw.js - This file needs to be in the root of the directory to work,
 //         so do not move it next to the other scripts
+// Source: Google ServiceWorker Guide
 
 const CACHE_NAME = 'lab-7-starter';
 const urlsToCache = [

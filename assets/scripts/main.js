@@ -47,6 +47,7 @@ async function init() {
  * Detects if there's a service worker, then loads it and begins the process
  * of installing it and getting it running
  */
+// Source: Google ServiceWorker Guide
 function initializeServiceWorker() {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
